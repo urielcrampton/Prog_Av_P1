@@ -1,3 +1,6 @@
+from questions import *
+from utills import *
+
 #Desarrollar un juego de trivia en Python usando programación funcional. Debe utilizar, de
 #los conceptos vistos en el curso, como mínimo:
 #1. recursión,
@@ -20,41 +23,14 @@
 #que haya una cobertura de tests de al menos 85%.
 
 
-import csv
-import random
-from typing import List, Tuple
-from itertools import chain
-from functools import wraps
-from PyMonad import Maybe, Just, Nothing
-
-
-def read_csv(file: str) -> List[Tuple[str, str, str, str]]:
-    with open(file, newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        return [(row[0], row[1], row[2], row[3]) for row in reader]
-    
-def get_questions(file: str) -> List[Tuple[str, str, str, str]]:
-    return read_csv(file)[1:]
-
-def get_random_questions(questions: List[Tuple[str, str, str, str]]) -> List[Tuple[str, str, str, str]]:
-    return random.sample(questions, 5)
-
-def ask_question(question: Tuple[str, str, str, str]) -> Maybe:
-    print(question[0])
-    print(question[1])
-    print(question[2])
-    print(question[3])
-    answer = input('Ingrese su respuesta: ')
-    return Just(10) if answer == question[3] else Nothing()
-
-def game(questions: List[Tuple[str, str, str, str]]) -> int:
-    return sum([ask_question(question).value for question in questions])
 
 def main(file: str) -> None:
     questions = get_random_questions(get_questions(file))
     score = game(questions)
     print(f'Su puntaje es: {score}')
+'''
 
 if __name__ == '__main__':
     main('JEOPARDY_CSV.csv')
 
+'''
