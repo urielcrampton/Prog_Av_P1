@@ -1,18 +1,11 @@
 from typing import List, Dict
-from .questions import load_questions, get_random_questions, shuffle_options, get_random_options
-from .utils import calculate_score, evaluate_answer
+from .questions import load_questions, get_random_questions_gen, shuffle_options, get_random_options
+from .utils import calculate_score
 from .decorators import timeit
 import itertools
 
-@timeit
-def play_game(questions: List[Dict[str, str]], num_questions: int) -> int:
-    selected_questions = get_random_questions(questions, num_questions)
-    correct_answers = sum([ask_question(q, questions) for q in selected_questions])
-    return calculate_score(correct_answers)
-
-def ask_question(question: Dict[str, str], all_questions: List[Dict[str, str]]) -> int:
-    options = get_random_options(all_questions, question['Answer'])
-    shuffled_options = shuffle_options(options)
+def ask_question_recursively(question: Dict[str, str], shuffled_options: List[str]) -> int:
+    """Function to ask a question and handle user input with recursion."""
     
     print(f"Category: {question['Category']}")
     print(f"Question: {question['Question']}")
@@ -22,8 +15,29 @@ def ask_question(question: Dict[str, str], all_questions: List[Dict[str, str]]) 
     
     user_answer = input("Your answer (1/2/3): ")
     
-    correct = evaluate_answer(shuffled_options[int(user_answer) - 1], question['Answer'])
-    return 1 if correct else 0
+    if user_answer not in {'1', '2', '3'}:
+        print("Invalid choice. Please choose 1, 2, or 3.")
+        return ask_question_recursively(question, shuffled_options)  # Recurence
+    
+    correct = lambda answer: answer.lower() == question['Answer'].lower()
+
+    if correct(shuffled_options[int(user_answer) - 1]):
+        print("Correct!\n")
+        return 1
+    else:
+        print(f"Incorrect. The correct answer was: {question['Answer']}\n")
+        return 0
+
+
+@timeit
+def play_game(questions: List[Dict[str, str]], num_questions: int) -> int:
+    """Function to play the game by asking a series of random questions."""
+    selected_questions = get_random_questions_gen(questions, num_questions)
+    correct_answers = sum([ask_question_recursively(q, shuffle_options(get_random_options(questions, q['Answer']))) for q in selected_questions])
+    return calculate_score(correct_answers)
+
+
+
 
 if __name__ == "__main__":
     questions = load_questions(r'data\JEOPARDY_CSV.csv')
