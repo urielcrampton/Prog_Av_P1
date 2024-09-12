@@ -60,7 +60,13 @@ def play_game(questions: List[Dict[str, str]], num_questions: int) -> int:
 
 
 if __name__ == "__main__":
-    questions = load_questions(r'data\JEOPARDY_CSV.csv')
-    score = play_game(questions, 5)
-    print(f"Tu puntuación final es: {score}")
+    maybe_questions = load_questions(r'data\JEOPARDY_CSV.csv')
 
+    # Verificamos si hay preguntas cargadas
+    questions = maybe_questions.get_or_else([])
+
+    if not questions:
+        print("No se pudieron cargar las preguntas. Por favor, verifica el archivo.")
+    else:
+        score = play_game(questions, 5)
+        print(f"Tu puntuación final es: {score}")

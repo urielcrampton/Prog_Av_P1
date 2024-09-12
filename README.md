@@ -24,12 +24,12 @@ En la raiz del proyecto, ejecutar:
     * Descripción: itertools.chain se utiliza para concatenar las opciones de respuesta correctas e incorrectas en una sola lista antes de barajarlas y presentarlas al usuario.
 6. Mónadas
     * Ubicación: monads.py en la clase Maybe.
-    * Descripción: La clase Maybe implementa un patrón de mónada, que se usa para manejar valores que pueden o no existir (es decir, valores opcionales). Proporciona métodos como bind para encadenar operaciones de manera segura sobre estos valores.
+    * Descripción: La clase Maybe se utiliza para encapsular operaciones que pueden resultar en un valor o en None, proporcionando una forma segura de manejar posibles valores faltantes o errores en el flujo del programa. En este código, se usa principalmente para cargar preguntas desde un archivo y garantizar que, en caso de que no se puedan cargar, el resto del sistema no falle inesperadamente. A través de métodos como bind y get_or_else, permite encadenar funciones sobre los datos cargados de manera segura, o proporcionar valores por defecto cuando los datos no están disponibles, evitando comprobaciones explícitas de None en otras partes del programa
 7. Funciones lambda
     * Ubicación: utils.py en la función evaluate_answer.
     * Descripción: Se utiliza una función lambda para comparar la respuesta del usuario con la respuesta correcta en la función evaluate_answer, permitiendo evaluar las respuestas de manera compacta y eficiente.
 8. functools.partial (Extra)
-    * Ubicación: utils.py en la función calculate_default_score.
+    * Ubicación: main.py y utils.py en la función calculate_default_score.
     * Descripción: partial se utiliza para predefinir el argumento points_per_question en la función calculate_score, creando una versión de la función con un valor fijo de puntos por pregunta, simplificando así las llamadas a la función en el resto del código.
 9. functools.lru_cache (Extra)
     * Ubicación: questions.py en la función load_questions.

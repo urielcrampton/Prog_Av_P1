@@ -4,21 +4,32 @@ import itertools
 import random
 from typing import List, Tuple, Dict
 from itertools import chain
+from .monads import Maybe  # Importamos Maybe
 
 @lru_cache(maxsize=1)
-def load_questions(file_path: str) -> List[Dict[str, str]]:
+def load_questions(file_path: str) -> Maybe[List[Dict[str, str]]]:
     """
-    Carga las preguntas desde un archivo CSV.
+    Carga las preguntas desde un archivo CSV utilizando Maybe para manejar errores.
 
     Args:
         file_path (str): Ruta al archivo CSV que contiene las preguntas.
 
     Returns:
-        List[Dict[str, str]]: Lista de diccionarios, cada uno representando una pregunta y sus opciones.
+        Maybe[List[Dict[str, str]]]: Maybe que contiene una lista de preguntas si la carga fue exitosa,
+                                     o un Maybe vacío si ocurrió un error.
     """
-    with open(file_path, mode='r', newline='', encoding='latin1') as file:
-        reader = csv.DictReader(file)
-        return [row for row in reader]
+    try:
+        with open(file_path, mode='r', newline='', encoding='latin1') as file:
+            reader = csv.DictReader(file)
+            questions = [row for row in reader]
+            if questions:
+                return Maybe(questions)  # Devuelve las preguntas envueltas en un Maybe
+            else:
+                return Maybe()  # Devuelve Maybe vacío si no hay preguntas
+    except FileNotFoundError:
+        print(f"Archivo no encontrado: {file_path}")
+        return Maybe()  # Devuelve Maybe vacío si ocurre un error
+
 
 def get_random_options(questions: List[Dict[str, str]], correct_answer: str) -> List[str]:
     """
