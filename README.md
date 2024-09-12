@@ -26,7 +26,7 @@ En la raiz del proyecto, ejecutar:
     * Ubicación: monads.py en la clase Maybe.
     * Descripción: La clase Maybe se utiliza para encapsular operaciones que pueden resultar en un valor o en None, proporcionando una forma segura de manejar posibles valores faltantes o errores en el flujo del programa. En este código, se usa principalmente para cargar preguntas desde un archivo y garantizar que, en caso de que no se puedan cargar, el resto del sistema no falle inesperadamente. A través de métodos como bind y get_or_else, permite encadenar funciones sobre los datos cargados de manera segura, o proporcionar valores por defecto cuando los datos no están disponibles, evitando comprobaciones explícitas de None en otras partes del programa
 7. Funciones lambda
-    * Ubicación: utils.py en la función evaluate_answer.
+    * Ubicación: main.py en la función evaluate_answer.
     * Descripción: Se utiliza una función lambda para comparar la respuesta del usuario con la respuesta correcta en la función evaluate_answer, permitiendo evaluar las respuestas de manera compacta y eficiente.
 8. functools.partial (Extra)
     * Ubicación: main.py y utils.py en la función calculate_default_score.
